@@ -24,66 +24,64 @@ def trigrams(s: str):
     return {s[i:i+3] for i in range(len(s) - 2)}
 
 
-@album_router.get("/get/{info}", response_model=List[ArtistResponse])
-def get_artist_by_search(info: str, db: Session = Depends(get_db)) -> List[ArtistResponse]:
+@album_router.get("/get/{info}", response_model=List[AlbumResponse])
+def get_album_by_search(info: str, db: Session = Depends(get_db)) -> List[AlbumResponse]:
     query = info.lower().strip()
 
-    stmt = select(Artist)
-    artists = db.execute(stmt).scalars().all()
+    stmt = select(Album)
+    albums = db.execute(stmt).scalars().all()
 
-    scored_artists = []
+    scored_albums = []
 
     if len(query) < 3:
-        for artist in artists:
-            if query in artist.nickname.lower():
-                scored_artists.append((1, artist))
+        for album in albums:
+            if query in album.title.lower():
+                scored_albums.append((1, album))
     else:
         query_trigrams = trigrams(query)
-        for artist in artists:
-            nickname_trigrams = trigrams(artist.nickname)
-            score = len(query_trigrams & nickname_trigrams)
+        for album in albums:
+            title_trigrams = trigrams(album.title)
+            score = len(query_trigrams & title_trigrams)
             if score > 0:
-                scored_artists.append((score, artist))
+                scored_albums.append((score, album))
 
-    scored_artists.sort(key=lambda x: x[0], reverse=True)
+    scored_albums.sort(key=lambda x: x[0], reverse=True)
 
-    return [ArtistResponse.model_validate(artist) for _, artist in scored_artists[:10]]
+    return [AlbumResponse.model_validate(album) for _, album in scored_albums[:10]]
                 
     
     
 
 
-@album_router.get("/get", response_model=List[ArtistResponse])
-def get_all_artists(db: Session = Depends(get_db)):
-    stmt = select(Artist).order_by(func.lower(Artist.nickname))
-    artists = db.execute(stmt).scalars().all()
-    return artists
+@album_router.get("/get", response_model=List[AlbumResponse])
+def get_all_albums(db: Session = Depends(get_db)):
+    stmt = select(Album).order_by(func.lower(Album.title))
+    albums = db.execute(stmt).scalars().all()
+    return albums
 
 
-@album_router.get("/get/{artist_id}", response_model=ArtistResponse)
-def get_artist_by_id(artist_id: str, db: Session = Depends(get_db)):
+@album_router.get("/get/id/{album_id}", response_model=AlbumResponse)
+def get_album_by_id(album_id: str, db: Session = Depends(get_db)):
     try:
-        stmt = select(Artist).where(Artist.id == artist_id)
-        artist = db.execute(stmt).scalars().one_or_none()
-        if not artist:
-            raise HTTPException(status_code=404, detail="Artist not found")
-        return artist
+        stmt = select(Album).where(Album.id == album_id)
+        album = db.execute(stmt).scalars().first()
+        if not album:
+            raise HTTPException(status_code=404, detail="Album not found")
+        return album
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 
 @album_router.post("/create")
-def create_artist(new_artist: ArtistCreate, db: Session = Depends(get_db)):
+def create_album(new_album: AlbumCreate, db: Session = Depends(get_db)):
     try:
-        artist = Artist(
+        album = Album(
             id=str(uuid.uuid4()),
-            name=new_artist.name,
-            nickname=new_artist.nickname,
-            image_url=new_artist.image_url,
-            country=new_artist.country,
-            birthday=new_artist.birthday,
+            title=new_album.title,
+            year=new_album.year,
+            cover_url=new_album.cover_url
         )
-        db.add(artist)
+        db.add(album)
         db.commit()
         return {"success": True}
     except Exception as e:
@@ -91,10 +89,10 @@ def create_artist(new_artist: ArtistCreate, db: Session = Depends(get_db)):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@album_router.delete("/delete/{artist_id}")
-def delete_artist(artist_id: str, db: Session = Depends(get_db)):
+@album_router.delete("/delete/{album_id}")
+def delete_album(album_id: str, db: Session = Depends(get_db)):
     try:
-        stmt = delete(Artist).where(Artist.id == id)
+        stmt = delete(Album).where(Album.id == album_id)
         db.execute(stmt)
         db.commit()
         return {"success": True}
@@ -104,9 +102,9 @@ def delete_artist(artist_id: str, db: Session = Depends(get_db)):
 
 
 @album_router.delete("/delete")
-def delete_all_artists(db: Session = Depends(get_db)):
+def delete_all_albums(db: Session = Depends(get_db)):
     try:
-        stmt = delete(Artist)
+        stmt = delete(Album)
         db.execute(stmt)
         db.commit()
         return {"success": True}
@@ -115,15 +113,15 @@ def delete_all_artists(db: Session = Depends(get_db)):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@album_router.put("/update/{artist_id}")
-def update_artist(
-    artist_id: str, update_artist: ArtistUpdate, db: Session = Depends(get_db)
+@album_router.put("/update/{album_id}")
+def update_album(
+    album_id: str, update_album: AlbumUpdate, db: Session = Depends(get_db)
 ):
     try:
         stmt = (
-            update(Artist)
-            .where(Artist.id == artist_id)
-            .values(**update_artist.model_dump(exclude_unset=True))
+            update(Album)
+            .where(Album.id == album_id)
+            .values(**update_album.model_dump(exclude_unset=True))
         )
         db.execute(stmt)
         db.commit()
@@ -133,18 +131,18 @@ def update_artist(
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@album_router.get("/artists", response_model=List[ArtistResponse])
-def get_artists_pagination(
+@album_router.get("/albums-pagination", response_model=List[AlbumResponse])
+def get_ablums_pagination(
     skip: int = 0, limit: int = 20, db: Session = Depends(get_db)
 ):
     try:
         stmt = (
-            select(Artist)
-            .order_by(func.lower(Artist.nickname))
+            select(Album)
+            .order_by(func.lower(Album.title))
             .offset(skip)
             .limit(limit)
         )
-        artists = db.execute(stmt).scalars().all()
-        return artists
+        albums = db.execute(stmt).scalars().all()
+        return albums
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

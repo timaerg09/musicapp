@@ -8,18 +8,18 @@ class BaseSchema(BaseModel):
 
 class AlbumCreate(BaseSchema):
     title: str
-    year: datetime.date   
+    year: int   
     cover_url: str
     
 class AlbumUpdate(BaseSchema):
     title: Optional[str]
-    year: Optional[datetime.date]   
+    year: Optional[int]   
     cover_url: Optional[str]
     
 class AlbumResponse(BaseSchema):
-    id: UUID
+    id: str
     title: str
-    year: datetime.date   
+    year: int  
     cover_url: str
     
     

@@ -60,11 +60,11 @@ def get_all_artists(db: Session = Depends(get_db)):
     return artists
 
 
-@artist_router.get("/get/{artist_id}", response_model=ArtistResponse)
+@artist_router.get("/get/id/{artist_id}", response_model=ArtistResponse)
 def get_artist_by_id(artist_id: str, db: Session = Depends(get_db)):
     try:
         stmt = select(Artist).where(Artist.id == artist_id)
-        artist = db.execute(stmt).scalars().one_or_none()
+        artist = db.execute(stmt).scalars().first()
         if not artist:
             raise HTTPException(status_code=404, detail="Artist not found")
         return artist
@@ -94,7 +94,7 @@ def create_artist(new_artist: ArtistCreate, db: Session = Depends(get_db)):
 @artist_router.delete("/delete/{artist_id}")
 def delete_artist(artist_id: str, db: Session = Depends(get_db)):
     try:
-        stmt = delete(Artist).where(Artist.id == id)
+        stmt = delete(Artist).where(Artist.id == artist_id)
         db.execute(stmt)
         db.commit()
         return {"success": True}
@@ -133,7 +133,7 @@ def update_artist(
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@artist_router.get("/artists", response_model=List[ArtistResponse])
+@artist_router.get("/artists-pagination", response_model=List[ArtistResponse])
 def get_artists_pagination(
     skip: int = 0, limit: int = 20, db: Session = Depends(get_db)
 ):

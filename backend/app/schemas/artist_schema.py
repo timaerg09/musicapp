@@ -21,7 +21,7 @@ class ArtistUpdate(BaseSchema):
     birthday: Optional[datetime.date]
     
 class ArtistResponse(BaseSchema):
-    id: UUID
+    id: str
     name : str
     nickname : str
     image_url: str
