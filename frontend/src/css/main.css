@@ -1,0 +1,160 @@
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Montserrat", sans-serif;
+  background-color: #121212;
+  color: #fff;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.container {
+  padding: 30px 50px;
+  height: 100vh;
+  margin-bottom: 30px;
+}
+
+.title {
+  font-size: 55px;
+  margin-bottom: 20px;
+}
+
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.content {
+  flex: 1;
+  margin-left: 300px;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  min-width: 300px;
+  font-size: 25px;
+  color: #fff;
+  height: 100vh;
+  background-color: #181818;
+  overflow-y: auto;
+}
+
+.sidebar__container {
+  padding: 50px 30px;
+}
+
+.sidebar__nav-logo {
+  margin-bottom: 150px;
+  font-size: 35px;
+}
+
+.sidebar__nav-item {
+  margin-bottom: 20px;
+  padding: 10px 10px 0 10px;
+  display: flex;
+}
+
+.sidebar__nav-item span {
+  margin-left: 25px;
+}
+
+.sidebar__nav-link{
+  margin-bottom: 10px;
+}
+
+.sidebar__nav-link:hover {
+  background-color: #2a2a2a;
+  border-radius: 5px;
+}
+
+.sidebar__nav {
+  display: flex;
+  flex-direction: column;
+}
+
+.home__subtitle {
+  margin-bottom: 20px;
+  font-size: 35px;
+}
+
+.home__artists,
+.home__albums {
+  display: flex;
+  justify-content: space-between;
+}
+
+
+
+.artist__card,
+.album__card {
+  width: 250px;
+  height: 350px;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(52, 73, 94, 0.7), 0 0 10px rgba(255, 255, 255, 0.04);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: transform 0.3s;
+  background: linear-gradient(to bottom right, #34495e, #1f2937, #111827);
+  margin-bottom: 50px;
+}
+
+.artist__card:hover,
+.album__card:hover {
+  transform: scale(1.05);
+  background: linear-gradient(to bottom right, #3c5a74, #272f3d, #1a1f28);
+}
+
+.card-container {
+  padding: 16px;
+  position: relative;
+  z-index: 10;
+}
+
+.card-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 10px;
+}
+
+/* .artist__card-info {
+  flex: 1;  
+  padding: 0 16px 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  z-index: 10;
+} */
+
+.artist__card-name,
+.album__card-year {
+  font-size: 14px;
+  color: #a3a3a3;
+  font-weight: 500;
+}
+
+.artist__card-nickname,
+.album__card-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 4px;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.5));
+}

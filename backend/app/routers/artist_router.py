@@ -15,6 +15,7 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from sqlalchemy import select, delete, update, func
 from typing import List
+import random
 
 artist_router = APIRouter(prefix="/artists", tags=["artists"])
 
@@ -131,6 +132,21 @@ def update_artist(
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@artist_router.get("/random", response_model=List[ArtistResponse])
+def get_random_artists(db: Session = Depends(get_db)):
+    try:
+        all_artists = db.execute(select(Artist)).scalars().all()
+        if not all_artists:
+            return []
+        random_artists = random.sample(all_artists, k=4)
+        return random_artists
+    except Exception as e:
+        raise HTTPException(status_code=505, detail=str(e))
+    
+
+
 
 
 @artist_router.get("/artists-pagination", response_model=List[ArtistResponse])
