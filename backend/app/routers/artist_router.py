@@ -81,7 +81,6 @@ def create_artist(new_artist: ArtistCreate, db: Session = Depends(get_db)):
             name=new_artist.name,
             nickname=new_artist.nickname,
             image_url=new_artist.image_url,
-            country=new_artist.country,
             birthday=new_artist.birthday,
         )
         db.add(artist)
@@ -140,7 +139,8 @@ def get_random_artists(db: Session = Depends(get_db)):
         all_artists = db.execute(select(Artist)).scalars().all()
         if not all_artists:
             return []
-        random_artists = random.sample(all_artists, k=4)
+        k = min(4, len(all_artists))
+        random_artists = random.sample(all_artists, k=k)
         return random_artists
     except Exception as e:
         raise HTTPException(status_code=505, detail=str(e))
@@ -151,7 +151,7 @@ def get_random_artists(db: Session = Depends(get_db)):
 
 @artist_router.get("/artists-pagination", response_model=List[ArtistResponse])
 def get_artists_pagination(
-    skip: int = 0, limit: int = 20, db: Session = Depends(get_db)
+    skip: int = 0, limit: int = 10, db: Session = Depends(get_db)
 ):
     try:
         stmt = (

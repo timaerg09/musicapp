@@ -141,8 +141,11 @@ def get_random_albums(db: Session = Depends(get_db)):
         all_albums = db.execute(select(Album)).scalars().all()
         if not all_albums:
             return []
-        random_albums = random.sample(all_albums, k=4)
+        k = min(4, len(all_albums))
+        random_albums = random.sample(all_albums, k=k)
         return random_albums
+    
+    
     except Exception as e:
         raise HTTPException(status_code=505, detail=str(e))
   
@@ -152,7 +155,7 @@ def get_random_albums(db: Session = Depends(get_db)):
 
 @album_router.get("/albums-pagination", response_model=List[AlbumResponse])
 def get_ablums_pagination(
-    skip: int = 0, limit: int = 20, db: Session = Depends(get_db)
+    skip: int = 0, limit: int = 10, db: Session = Depends(get_db)
 ):
     try:
         stmt = (

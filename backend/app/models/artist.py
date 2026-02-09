@@ -12,7 +12,6 @@ class Artist(Base):
     name = Column(String, nullable=False)
     nickname = Column(String, nullable=False)
     image_url = Column(String)
-    country = Column(String)
     birthday = Column(Date)
 
     # albums = relationship("Album", secondary="ArtistAlbum", back_populates="artists")
