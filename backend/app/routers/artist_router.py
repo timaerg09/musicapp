@@ -151,7 +151,7 @@ def get_random_artists(db: Session = Depends(get_db)):
 
 @artist_router.get("/artists-pagination", response_model=List[ArtistResponse])
 def get_artists_pagination(
-    skip: int = 0, limit: int = 10, db: Session = Depends(get_db)
+    skip: int = 0, limit: int = 8, db: Session = Depends(get_db)
 ):
     try:
         stmt = (

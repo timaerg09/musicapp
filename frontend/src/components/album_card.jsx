@@ -12,6 +12,7 @@ class Album_Card extends React.Component {
           ></img>
           <div className="album__card-title">{this.props.title}</div>
           <div className="album__card-year">{this.props.year}</div>
+          <div className="album__card-artists">{this.props.artists}</div>
         </div>
       </div>
     );

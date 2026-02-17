@@ -5,7 +5,7 @@ from app.routers.album__router import album_router
 from app.routers.artist_album_router import artist_album_router
 from app.config import settings
 
-app = FastAPI(title="Music app", version="0.1.0", docs_url="/docs", redoc_url="/redoc")
+app = FastAPI(title="Music base", version="0.1.0", docs_url="/docs", redoc_url="/redoc")
 
 app.add_middleware(
     CORSMiddleware,

@@ -155,7 +155,7 @@ def get_random_albums(db: Session = Depends(get_db)):
 
 @album_router.get("/albums-pagination", response_model=List[AlbumResponse])
 def get_ablums_pagination(
-    skip: int = 0, limit: int = 10, db: Session = Depends(get_db)
+    skip: int = 0, limit: int = 8, db: Session = Depends(get_db)
 ):
     try:
         stmt = (

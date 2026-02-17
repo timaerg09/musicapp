@@ -11,7 +11,7 @@ class Sidebar extends React.Component {
         <div className="sidebar__container">
           <nav className="sidebar__nav">
             <Link to="/" className="sidebar__nav-logo">
-              Music app
+              Music Base
             </Link>
             <Link className="sidebar__nav-link" to="/">
               <div className="sidebar__nav-item">
@@ -19,18 +19,18 @@ class Sidebar extends React.Component {
                 <span>Home</span>
               </div>
             </Link>
-              <Link className="sidebar__nav-link" to="/artists">
-            <div className="sidebar__nav-item">
+            <Link className="sidebar__nav-link" to="/artists">
+              <div className="sidebar__nav-item">
                 <TbMicrophone2 />
                 <span>Artists</span>
-            </div>
-              </Link>
-              <Link className="sidebar__nav-link" to="/albums">
-            <div className="sidebar__nav-item">
+              </div>
+            </Link>
+            <Link className="sidebar__nav-link" to="/albums">
+              <div className="sidebar__nav-item">
                 <BiAlbum />
                 <span>Albums</span>
-            </div>
-              </Link>
+              </div>
+            </Link>
           </nav>
         </div>
       </div>

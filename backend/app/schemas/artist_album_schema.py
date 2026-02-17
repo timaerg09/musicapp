@@ -2,6 +2,8 @@ from pydantic import BaseModel, ConfigDict
 from typing import Optional
 import datetime
 from uuid import UUID
+from typing import List
+from .artist_schema import ArtistResponse
 
 class BaseSchema(BaseModel):
     model_config = ConfigDict(from_attributes=True)
@@ -19,3 +21,7 @@ class Artist_AlbumUpdate(BaseSchema):
 class Artist_AlbumResponse(BaseSchema):
     artist_id : UUID
     album_id : UUID
+
+class AlbumArtistsResponse(BaseSchema):
+    album_id: UUID
+    artists: List[ArtistResponse]

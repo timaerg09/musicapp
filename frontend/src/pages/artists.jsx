@@ -1,11 +1,51 @@
 import React from "react";
+import ArtistCreate from "../components/create_artist";
+import { IoIosAddCircleOutline } from "react-icons/io";
+import ArtistCard from "../components/artist_card";
 
 class Artists extends React.Component {
+  state = {
+    artists: [],
+    showForm: false,
+  };
+
+  componentDidMount() {
+    fetch("http://localhost:8000/artists/artists-pagination/")
+      .then((res) => res.json())
+      .then((data) => {
+        this.setState({ artists: data });
+      });
+  }
+
+  handleAddForm = (e) => {
+    this.setState((prev) => ({ showForm: !prev.showForm }));
+  };
+
   render() {
+    const { artists } = this.state;
     return (
       <div className="artists">
         <div className="container">
-          <h2 className="title">Artists</h2>
+          <div className="artists__header">
+            <h2 className="title">Artists</h2>
+            <div
+              className="artists__header-button"
+              onClick={this.handleAddForm}
+            >
+              <IoIosAddCircleOutline className="add--icon" />
+            </div>
+          </div>
+          <ArtistCreate showForm={this.state.showForm} />
+          <div className="artists__content">
+            {(Array.isArray(artists) ? artists : []).map((artist) => (
+              <ArtistCard
+                key={artist.id}
+                image_url={artist.image_url}
+                nickname={artist.nickname}
+                name={artist.name}
+              />
+            ))}
+          </div>
         </div>
       </div>
     );
