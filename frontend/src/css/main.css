@@ -102,11 +102,9 @@ button {
   margin-bottom: 30px;
 }
 
-.home__title{
+.home__title {
   margin-bottom: 20px;
 }
-
-
 
 /* ====== CARDS ====== */
 
@@ -123,13 +121,13 @@ button {
   transition: transform 0.3s;
   margin-bottom: 20px;
 
-  display: flex;            
-  flex-direction: column;   
-  word-wrap: break-word;    
+  display: flex;
+  flex-direction: column;
+  word-wrap: break-word;
   white-space: normal;
 }
 
-.artist__card:hover{
+.artist__card:hover {
   cursor: pointer;
 }
 
@@ -190,7 +188,8 @@ button {
 }
 
 /* форма по умолчанию скрыта */
-.create-artist__form, .create-album__form {
+.create-artist__form,
+.create-album__form {
   display: none;
   /* max-height: 0; */
   opacity: 0;
@@ -208,7 +207,8 @@ button {
 }
 
 /* активное состояние */
-.create-artist__form--active, .create-album__form--active {  
+.create-artist__form--active,
+.create-album__form--active {
   display: block;
   max-height: 350px;
   opacity: 1;
@@ -261,9 +261,6 @@ button {
   cursor: pointer;
 }
 
-
-
-
 .artists__header {
   display: flex;
   align-items: center;
@@ -276,23 +273,17 @@ button {
   cursor: pointer;
 }
 
-.artists__content{
+.artists__content {
   display: flex;
-  gap: 30px; 
-  flex-wrap: wrap; 
+  gap: 30px;
+  flex-wrap: wrap;
   /* justify-content: flex-start; */
 }
 
-
-
-
-
-
-
-.albums__content{
+.albums__content {
   display: flex;
-  gap: 30px; 
-  flex-wrap: wrap; 
+  gap: 30px;
+  flex-wrap: wrap;
   /* justify-content: flex-start; */
 }
 
@@ -307,10 +298,6 @@ button {
   padding: 0;
   cursor: pointer;
 }
-
-
-
-
 
 .create-album {
   display: flex;
@@ -380,4 +367,20 @@ button {
 .create-album button[type="submit"]:hover {
   background-color: #555;
   cursor: pointer;
+}
+
+.search__album-input, .search__artist-input {
+  width: 500px;
+  flex: 1;
+  padding: 10px;
+  background-color: #2a2a2a;
+  border: 1px solid #3a3a3a;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 14px;
+}
+
+.search__album-input:focus, .search__artist-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 1px #666;
 }

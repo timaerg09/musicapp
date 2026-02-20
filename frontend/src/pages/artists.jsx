@@ -2,12 +2,17 @@ import React from "react";
 import ArtistCreate from "../components/create_artist";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import ArtistCard from "../components/artist_card";
+import SearchArtist from "../components/search_artist";
 
 class Artists extends React.Component {
-  state = {
-    artists: [],
-    showForm: false,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      artists: [],
+      showForm: false,
+    };
+    this.handleSearchResult = this.handleSearchResult.bind(this);
+  }
 
   componentDidMount() {
     fetch("http://localhost:8000/artists/artists-pagination/")
@@ -20,6 +25,10 @@ class Artists extends React.Component {
   handleAddForm = (e) => {
     this.setState((prev) => ({ showForm: !prev.showForm }));
   };
+
+  handleSearchResult(searchData) {
+    this.setState({ artists: searchData });
+  }
 
   render() {
     const { artists } = this.state;
@@ -34,6 +43,7 @@ class Artists extends React.Component {
             >
               <IoIosAddCircleOutline className="add--icon" />
             </div>
+            <SearchArtist onSearchResult={this.handleSearchResult} />
           </div>
           <ArtistCreate showForm={this.state.showForm} />
           <div className="artists__content">

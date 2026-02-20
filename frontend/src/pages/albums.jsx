@@ -1,16 +1,21 @@
 import React from "react";
-import AlbumCreate from "../components/create_album";
-import { IoIosAddCircleOutline } from "react-icons/io";
+// import AlbumCreate from "../components/create_album";
+// import { IoIosAddCircleOutline } from "react-icons/io";
 import AlbumCard from "../components/album_card";
-import {getArtistsNicknames} from "../utils";
+import { getArtistsNicknames } from "../utils";
+import SearchAlbum from "../components/search_album";
 
 class Albums extends React.Component {
-  state = {
-    albums: [],
-    album_ids:[],
-    artists_of_albums:[],
-    showForm: false,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      albums: [],
+      album_ids: [],
+      artists_of_albums: [],
+      showForm: false,
+    };
+    this.handleSearchResult = this.handleSearchResult.bind(this);
+  }
 
   componentDidMount() {
     fetch("http://localhost:8000/albums/albums-pagination/")
@@ -27,7 +32,6 @@ class Albums extends React.Component {
         )
           .then((res) => res.json())
           .then((artistsData) => {
-
             const artists_map = {};
             artistsData.forEach((item) => {
               artists_map[item.album_id] = item.artists;
@@ -41,18 +45,25 @@ class Albums extends React.Component {
     this.setState((prev) => ({ showForm: !prev.showForm }));
   };
 
+  handleSearchResult(searchData) {
+    const album_ids = searchData.map((album) => album.id);
+    this.setState({ albums: searchData, album_ids: album_ids });
+  };
+
   render() {
-    const { albums, artists_of_albums} = this.state;
+    const { albums, artists_of_albums } = this.state;
     return (
       <div className="albums">
         <div className="container">
           <div className="albums__header">
             <h2 className="title">Albums</h2>
-            <div className="albums__header-button" onClick={this.handleAddForm}>
+            {/* <div className="albums__header-button" onClick={this.handleAddForm}>
               <IoIosAddCircleOutline className="add--icon" />
-            </div>
+            </div> */}
+            <SearchAlbum onSearchResult={this.handleSearchResult} />
           </div>
-          <AlbumCreate showForm={this.state.showForm}/>
+          {/* <AlbumCreate showForm={this.state.showForm}/> */}
+
           <div className="albums__content">
             {(Array.isArray(albums) ? albums : []).map((album) => (
               <AlbumCard
