@@ -3,6 +3,7 @@ import ArtistCreate from "../components/create_artist";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import ArtistCard from "../components/artist_card";
 import SearchArtist from "../components/search_artist";
+import API_URL from "../config";
 
 class Artists extends React.Component {
   constructor(props) {
@@ -20,7 +21,7 @@ class Artists extends React.Component {
   fetchArtists = () => {
     const skip = (this.state.currentPage - 1) * this.state.limit;
     fetch(
-      `http://localhost:8000/artists/artists-pagination/?skip=${skip}&limit=${this.state.limit}`,
+      `${API_URL}/artists/artists-pagination/?skip=${skip}&limit=${this.state.limit}`,
     )
       .then((res) => res.json())
       .then((data) => {
@@ -28,7 +29,7 @@ class Artists extends React.Component {
       });
   };
   componentDidMount() {
-    fetch("http://localhost:8000/artists/get/count")
+    fetch(`${API_URL}/artists/get/count`)
       .then((res) => res.json())
       .then((data) => {
         this.setState({ totalPages: Math.ceil(data / this.state.limit) });

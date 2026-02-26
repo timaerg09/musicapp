@@ -1,4 +1,5 @@
 import React from "react";
+import API_URL from "../config";
 
 class CreateAlbum extends React.Component {
   state = {
@@ -21,7 +22,7 @@ class CreateAlbum extends React.Component {
       this.setState({ artist_results: [] });
       return;
     }
-    fetch(`http://localhost:8000/artists/get/${query}`)
+    fetch(`${API_URL}/artists/get/${query}`)
       .then((res) => res.json())
       .then((data) => this.setState({ artist_results: data }));
   };
@@ -46,11 +47,10 @@ class CreateAlbum extends React.Component {
     e.preventDefault();
     const { title, year, cover_url, selected_artists } = this.state;
     if (selected_artists.length === 0) {
-      
-      alert("Добавьте хотя бы одного артиста"); 
-      return; 
+      alert("Добавьте хотя бы одного артиста");
+      return;
     }
-    fetch("http://localhost:8000/albums/create", {
+    fetch(`${API_URL}/albums/create`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ title, year, cover_url }),
@@ -62,7 +62,7 @@ class CreateAlbum extends React.Component {
           params.append("artist_ids", artist.id),
         );
         params.append("album_ids", data.id);
-        fetch(`http://localhost:8000/artist-album/create?${params}`, {
+        fetch(`${API_URL}/artist-album/create?${params}`, {
           method: "POST",
         }).then(() => {
           this.setState({

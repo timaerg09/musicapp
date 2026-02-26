@@ -1,4 +1,5 @@
 import React from "react";
+import API_URL from "../config";
 
 class SearchArtist extends React.Component {
   handleChange = (e) => {
@@ -9,7 +10,7 @@ class SearchArtist extends React.Component {
       return;
     }
 
-    fetch(`http://localhost:8000/artists/artists-pagination/${query}`)
+    fetch(`${API_URL}/artists/artists-pagination/${query}`)
       .then((res) => res.json())
       .then((data) => {
         this.props.onSearchResult(data);

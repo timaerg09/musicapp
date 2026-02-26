@@ -2,6 +2,8 @@ import React from "react";
 import ArtistCard from "../components/artist_card";
 import AlbumCard from "../components/album_card";
 import { getArtistsNicknames } from "../utils";
+import API_URL from "../config";
+
 class Home extends React.Component {
   state = {
     artists: [],
@@ -11,13 +13,13 @@ class Home extends React.Component {
   };
 
   componentDidMount() {
-    fetch("http://localhost:8000/artists/random")
+    fetch(`${API_URL}/artists/random`)
       .then((res) => res.json())
       .then((data) => {
         this.setState({ artists: data });
       });
 
-    fetch("http://localhost:8000/albums/random")
+    fetch(`${API_URL}/albums/random`)
       .then((res) => res.json())
       .then((data) => {
         const album_ids = data.map((album) => album.id);
@@ -27,7 +29,7 @@ class Home extends React.Component {
         album_ids.forEach((id) => params.append("album_ids", id));
 
         fetch(
-          `http://localhost:8000/artist-album/get/artists/by-albums?${params}`,
+          `${API_URL}/artist-album/get/artists/by-albums?${params}`,
         )
           .then((res) => res.json())
           .then((artistsData) => {

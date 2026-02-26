@@ -1,4 +1,5 @@
 import React from "react";
+import API_URL from "../config";
 
 class CreateArtist extends React.Component {
   state = {
@@ -15,7 +16,7 @@ class CreateArtist extends React.Component {
   handleSumbit = (e) => {
     e.preventDefault();
     const { name, nickname, image_url, birthday } = this.state;
-    fetch("http://localhost:8000/artists/create", {
+    fetch(`${API_URL}/artists/create`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, nickname, image_url, birthday }),

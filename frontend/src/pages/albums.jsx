@@ -1,9 +1,8 @@
 import React from "react";
-// import AlbumCreate from "../components/create_album";
-// import { IoIosAddCircleOutline } from "react-icons/io";
 import AlbumCard from "../components/album_card";
 import { getArtistsNicknames } from "../utils";
 import SearchAlbum from "../components/search_album";
+import API_URL from "../config";
 
 class Albums extends React.Component {
   constructor(props) {
@@ -23,7 +22,7 @@ class Albums extends React.Component {
   fetchAlbums = () => {
     const skip = (this.state.currentPage - 1) * this.state.limit;
     fetch(
-      `http://localhost:8000/albums/albums-pagination/?skip=${skip}&limit=${this.state.limit}`,
+      `${API_URL}/albums/albums-pagination/?skip=${skip}&limit=${this.state.limit}`,
     )
       .then((res) => res.json())
       .then((data) => {
@@ -34,7 +33,7 @@ class Albums extends React.Component {
         album_ids.forEach((id) => params.append("album_ids", id));
         if (album_ids.length === 0) return;
         fetch(
-          `http://localhost:8000/artist-album/get/artists/by-albums?${params}`,
+          `${API_URL}/artist-album/get/artists/by-albums?${params}`,
         )
           .then((res) => res.json())
           .then((artistsData) => {
@@ -47,7 +46,7 @@ class Albums extends React.Component {
       });
   };
   componentDidMount() {
-    fetch("http://localhost:8000/albums/get/count")
+    fetch(`${API_URL}/albums/get/count`)
       .then((res) => res.json())
       .then((data) => {
         this.setState({ totalPages: Math.ceil(data / this.state.limit) });

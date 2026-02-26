@@ -6,6 +6,7 @@ import { IoArrowBackCircleOutline } from "react-icons/io5";
 import AlbumCreate from "../components/create_album";
 import { CiEdit } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
+import API_URL from "../config";
 
 class ArtistPage extends React.Component {
   constructor(props) {
@@ -55,12 +56,12 @@ class ArtistPage extends React.Component {
     return `${day} ${months[month]} ${year}`;
   };
   componentDidMount() {
-    fetch(`http://localhost:8000/artists/get/id/${this.props.id}`)
+    fetch(`${API_URL}/artists/get/id/${this.props.id}`)
       .then((res) => res.json())
       .then((data) => {
         this.setState({ artist: data });
         fetch(
-          `http://localhost:8000/artist-album/get/albums/by-artist?artist_id=${this.props.id}`,
+          `${API_URL}/artist-album/get/albums/by-artist?artist_id=${this.props.id}`,
         )
           .then((res) => res.json())
           .then((data1) => {
@@ -73,18 +74,18 @@ class ArtistPage extends React.Component {
   };
   handleDeleteAlbum = (album_id) => {
     fetch(
-      `http://localhost:8000/artist-album/get/artists/by-albums?album_ids=${album_id}`,
+      `${API_URL}/artist-album/get/artists/by-albums?album_ids=${album_id}`,
     )
       .then((res) => res.json())
       .then((data) => {
         const artists = data[0].artists;
         if (artists.length === 1) {
-          fetch(`http://localhost:8000/albums/delete/${album_id}`, {
+          fetch(`${API_URL}/albums/delete/${album_id}`, {
             method: "DELETE",
           }).then(() => this.refreshAlbums());
         } else {
           fetch(
-            `http://localhost:8000/artist-album/delete/connection?artist_id=${this.props.id}&album_id=${album_id}`,
+            `${API_URL}/artist-album/delete/connection?artist_id=${this.props.id}&album_id=${album_id}`,
             {
               method: "DELETE",
             },
@@ -106,7 +107,7 @@ class ArtistPage extends React.Component {
   };
   refreshAlbums = () => {
     fetch(
-      `http://localhost:8000/artist-album/get/albums/by-artist?artist_id=${this.props.id}`,
+      `${API_URL}/artist-album/get/albums/by-artist?artist_id=${this.props.id}`,
     )
       .then((res) => res.json())
       .then((data) => this.setState({ albums: data }));
@@ -124,7 +125,7 @@ class ArtistPage extends React.Component {
     }));
   };
   handleConfirmDelete = () => {
-    fetch(`http://localhost:8000/artists/delete/${this.props.id}`, {
+    fetch(`${API_URL}/artists/delete/${this.props.id}`, {
       method: "DELETE",
     }).then(() => {
       window.history.back();
@@ -132,7 +133,7 @@ class ArtistPage extends React.Component {
   };
   handleSaveArtist = (e) => {
     e.preventDefault();
-    fetch(`http://localhost:8000/artists/update/${this.props.id}`, {
+    fetch(`${API_URL}/artists/update/${this.props.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(this.state.editData),
@@ -145,7 +146,7 @@ class ArtistPage extends React.Component {
   };
   handleSaveAlbum = (e, album_id) => {
     e.preventDefault();
-    fetch(`http://localhost:8000/albums/update/${album_id}`, {
+    fetch(`${API_URL}/albums/update/${album_id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(this.state.editAlbumData),
