@@ -5,11 +5,7 @@ class SearchAlbum extends React.Component {
     const query = e.target.value;
 
     if (!query) {
-      fetch("http://localhost:8000/albums/albums-pagination/")
-        .then((res) => res.json())
-        .then((data) => {
-          this.props.onSearchResult(data);
-        });
+      this.props.onSearchResult(null);
       return;
     }
 
@@ -23,7 +19,12 @@ class SearchAlbum extends React.Component {
   render() {
     return (
       <div className="search__album">
-        <input placeholder="Search something..." className="search__album-input" name="name" onChange={this.handleChange} />
+        <input
+          placeholder="Search something..."
+          className="search__album-input"
+          name="name"
+          onChange={this.handleChange}
+        />
       </div>
     );
   }

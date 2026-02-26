@@ -22,7 +22,7 @@ artist_album_router = APIRouter(prefix="/artist-album", tags=["artist_album"])
 
 @artist_album_router.post("/create")
 def create_artist_album_connection(
-    artist_ids: List[str], album_ids: List[str], db: Session = Depends(get_db)
+    artist_ids: List[str]=Query(...), album_ids: List[str]=Query(...), db: Session = Depends(get_db)
 ):
     try:
         for artist_id in artist_ids:
@@ -68,6 +68,7 @@ def get_albums_by_artist(artist_id: str, db: Session = Depends(get_db)):
                 select(Album)
                 .join(ArtistAlbum, Album.id == ArtistAlbum.album_id)
                 .where(ArtistAlbum.artist_id == artist_id)
+                .order_by(Album.year.desc())
             )
             .scalars()
             .all()
@@ -77,8 +78,8 @@ def get_albums_by_artist(artist_id: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@artist_album_router.delete("/delete/{artist_id}-{album_id}")
-def delete_connection(artist_id: str, album_id: str, db: Session = Depends(get_db)):
+@artist_album_router.delete("/delete/connection")
+def delete_connection(artist_id: str=Query(...), album_id: str=Query(...), db: Session = Depends(get_db)):
     try:
         stmt = delete(ArtistAlbum).where(
             ArtistAlbum.artist_id == artist_id, ArtistAlbum.album_id == album_id

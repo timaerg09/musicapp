@@ -23,7 +23,6 @@ class Home extends React.Component {
         const album_ids = data.map((album) => album.id);
         this.setState({ albums: data, album_ids: album_ids });
 
-        // Делаем запрос на получение артистов для альбомов
         const params = new URLSearchParams();
         album_ids.forEach((id) => params.append("album_ids", id));
 
@@ -56,6 +55,7 @@ class Home extends React.Component {
               {(Array.isArray(artists) ? artists : []).map((artist) => (
                 <ArtistCard
                   key={artist.id}
+                  id={artist.id}
                   image_url={artist.image_url}
                   nickname={artist.nickname}
                   name={artist.name}

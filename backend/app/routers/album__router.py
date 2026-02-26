@@ -8,7 +8,7 @@ from app.schemas.artist_album_schema import (
 from app.models.album import Album
 from app.models.artist import Artist
 from app.models.artist_album import ArtistAlbum
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException,Query
 import datetime
 import uuid
 from sqlalchemy.orm import Session
@@ -90,7 +90,7 @@ def create_album(new_album: AlbumCreate, db: Session = Depends(get_db)):
         )
         db.add(album)
         db.commit()
-        return {"success": True}
+        return {"success": True, "id": album.id}
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=str(e))

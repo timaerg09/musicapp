@@ -5,11 +5,7 @@ class SearchArtist extends React.Component {
     const query = e.target.value;
 
     if (!query) {
-      fetch("http://localhost:8000/artists/artists-pagination/")
-        .then((res) => res.json())
-        .then((data) => {
-          this.props.onSearchResult(data);
-        });
+      this.props.onSearchResult(null);
       return;
     }
 

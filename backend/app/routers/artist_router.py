@@ -97,8 +97,32 @@ def create_artist(new_artist: ArtistCreate, db: Session = Depends(get_db)):
 @artist_router.delete("/delete/{artist_id}")
 def delete_artist(artist_id: str, db: Session = Depends(get_db)):
     try:
-        stmt = delete(Artist).where(Artist.id == artist_id)
-        db.execute(stmt)
+        albums = (
+            db.execute(
+                select(Album)
+                .join(ArtistAlbum, Album.id == ArtistAlbum.album_id)
+                .where(ArtistAlbum.artist_id == artist_id)
+            )
+            .scalars()
+            .all()
+        )
+
+        for album in albums:
+            artists_count = db.execute(
+                select(func.count()).select_from(ArtistAlbum).where(ArtistAlbum.album_id == album.id)
+            ).scalar()
+
+            if artists_count == 1:
+                db.execute(delete(Album).where(Album.id == album.id))
+            else:
+                db.execute(
+                    delete(ArtistAlbum).where(
+                        ArtistAlbum.album_id == album.id,
+                        ArtistAlbum.artist_id == artist_id
+                    )
+                )
+
+        db.execute(delete(Artist).where(Artist.id == artist_id))
         db.commit()
         return {"success": True}
     except Exception as e:

@@ -10,24 +10,68 @@ class Artists extends React.Component {
     this.state = {
       artists: [],
       showForm: false,
+      currentPage: 1,
+      limit: 8,
+      totalPages: 0,
+      isSearching: false,
     };
     this.handleSearchResult = this.handleSearchResult.bind(this);
   }
-
-  componentDidMount() {
-    fetch("http://localhost:8000/artists/artists-pagination/")
+  fetchArtists = () => {
+    const skip = (this.state.currentPage - 1) * this.state.limit;
+    fetch(
+      `http://localhost:8000/artists/artists-pagination/?skip=${skip}&limit=${this.state.limit}`,
+    )
       .then((res) => res.json())
       .then((data) => {
         this.setState({ artists: data });
       });
+  };
+  componentDidMount() {
+    fetch("http://localhost:8000/artists/get/count")
+      .then((res) => res.json())
+      .then((data) => {
+        this.setState({ totalPages: Math.ceil(data / this.state.limit) });
+      });
+    this.fetchArtists();
   }
 
+  getPageNumbers = () => {
+    const { currentPage, totalPages } = this.state;
+    const pages = [];
+
+    for (let i = 1; i <= totalPages; i++) {
+      if (
+        i <= 2 ||
+        i >= totalPages - 1 ||
+        (i >= currentPage - 1 && i <= currentPage + 1)
+      ) {
+        pages.push(i);
+      } else if (pages[pages.length - 1] !== "...") {
+        pages.push("...");
+      }
+    }
+
+    return pages;
+  };
+  handlePageChange = (page) => {
+    this.setState({ currentPage: page }, () => {
+      this.fetchArtists();
+    });
+  };
   handleAddForm = (e) => {
     this.setState((prev) => ({ showForm: !prev.showForm }));
   };
 
   handleSearchResult(searchData) {
-    this.setState({ artists: searchData });
+     if (!searchData) {
+      this.setState({ isSearching: false }, () => this.fetchArtists());
+      return;
+    }
+    this.setState({
+      isSearching: true,
+      artists: searchData
+    });
   }
 
   render() {
@@ -50,12 +94,32 @@ class Artists extends React.Component {
             {(Array.isArray(artists) ? artists : []).map((artist) => (
               <ArtistCard
                 key={artist.id}
+                id={artist.id}
                 image_url={artist.image_url}
                 nickname={artist.nickname}
                 name={artist.name}
               />
             ))}
           </div>
+          {!this.state.isSearching && (
+            <div className="artists__pagination">
+              {this.getPageNumbers().map((page, index) =>
+                page === "..." ? (
+                  <span key={index} className="artists__pagination-dots">
+                    ...
+                  </span>
+                ) : (
+                  <button
+                    key={index}
+                    className={`artists__pagination-btn ${this.state.currentPage === page ? "artists__pagination-btn--active" : ""}`}
+                    onClick={() => this.handlePageChange(page)}
+                  >
+                    {page}
+                  </button>
+                ),
+              )}
+            </div>
+          )}
         </div>
       </div>
     );

@@ -4,7 +4,8 @@ import { BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
 import App from "./App";
 import Home from "./pages/home";  
 import Artists from "./pages/artists";
-import Albums from "./pages/albums";  
+import Albums from "./pages/albums"; 
+import ArtistPage from "./pages/artist_page" 
 
 const root = ReactDOM.createRoot(document.getElementById("app"));
 root.render(
@@ -15,6 +16,7 @@ root.render(
           <Route index element={<Home />} />
           <Route path="albums" element={<Albums />} />
           <Route path="artists" element={<Artists />} />
+          <Route path="artists/:id" element={<ArtistPage/>}/>
           <Route path="*" element={<Navigate to="/" />} />
         </Route>
       </Routes>
