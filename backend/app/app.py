@@ -4,6 +4,9 @@ from app.routers.artist_router import artist_router
 from app.routers.album__router import album_router
 from app.routers.artist_album_router import artist_album_router
 from app.config import settings
+from app.database import init_db
+
+init_db()
 
 app = FastAPI(title="Music base", version="0.1.0", docs_url="/docs", redoc_url="/redoc")
 
