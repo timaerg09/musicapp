@@ -99,8 +99,8 @@ def create_album(new_album: AlbumCreate, db: Session = Depends(get_db)):
 @album_router.delete("/delete/{album_id}")
 def delete_album(album_id: str, db: Session = Depends(get_db)):
     try:
-        stmt = delete(Album).where(Album.id == album_id)
-        db.execute(stmt)
+        db.execute(delete(ArtistAlbum).where(ArtistAlbum.album_id == album_id))
+        db.execute(delete(Album).where(Album.id == album_id))
         db.commit()
         return {"success": True}
     except Exception as e:
