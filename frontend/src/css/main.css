@@ -132,7 +132,7 @@ button {
 
 .artist__card,
 .album__card {
-  width: 250px;
+  width: 232px;
   min-height: 350px;
   border-radius: 16px;
   background: linear-gradient(to bottom right, #34495e, #1f2937, #111827);
