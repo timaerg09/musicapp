@@ -31,7 +31,7 @@ class CreateArtist extends React.Component {
       <div className={`create-artist `}>
         <form
           className={`create-artist__form   ${showForm ? "create-artist__form--active" : ""}`}
-          onSubmit={this.handleSumbit}
+          onSubmit={this.handleSumbit} autoComplete="off"
         >
           <div className="create-artist__form-item">
             <label htmlFor="name">Name</label>

@@ -70,7 +70,7 @@ class CreateAlbum extends React.Component {
             year: "",
             cover_url: "",
             selected_artists: [],
-          }); // ★ перенёс сюда
+          }); 
           window.location.reload();
         });
       });
@@ -83,7 +83,7 @@ class CreateAlbum extends React.Component {
       <div className="create-album">
         <form
           className={`create-album__form ${showForm ? "create-album__form--active" : ""}`}
-          onSubmit={this.handleSumbit}
+          onSubmit={this.handleSumbit} autoComplete="off"
         >
           <div className="create-album__form-item">
             <label htmlFor="title">Title</label>
