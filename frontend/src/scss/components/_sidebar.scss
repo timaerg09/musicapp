@@ -1,0 +1,34 @@
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  min-width: 300px;
+  height: 100vh;
+  background-color: #181818;
+  color: #fff;
+  &__container {
+    padding: 50px 30px;
+  }
+  &__nav {
+    display: flex;
+    flex-direction: column;
+    &-logo {
+      margin-bottom: 150px;
+      font-size: 35px;
+    }
+    &-link {
+      margin-bottom: 10px;
+      &:hover {
+        background-color: #2a2a2a;
+        border-radius: 5px;
+      }
+    }
+    &-item {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      gap: 25px;
+      font-size: 25px;
+    }
+  }
+}

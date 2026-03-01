@@ -298,7 +298,6 @@ class ArtistPage extends React.Component {
                     className="album-edit-form"
                   >
                     <input
-                      className="album-edit-form__input"
                       value={this.state.editAlbumData.title}
                       onChange={(e) =>
                         this.setState({
@@ -310,7 +309,6 @@ class ArtistPage extends React.Component {
                       }
                     />
                     <input
-                      className="album-edit-form__input"
                       value={this.state.editAlbumData.year}
                       onChange={(e) =>
                         this.setState({
@@ -325,7 +323,6 @@ class ArtistPage extends React.Component {
                       max={new Date().getFullYear()}
                     />
                     <input
-                      className="album-edit-form__input"
                       value={this.state.editAlbumData.cover_url}
                       onChange={(e) =>
                         this.setState({
@@ -336,13 +333,13 @@ class ArtistPage extends React.Component {
                         })
                       }
                     />
-                    <button className="album-edit-form__btn album-edit-form__btn--save">
+                    <button className="album-edit-form__btn--save">
                       Сохранить
                     </button>
                     <button
                       type="button"
                       onClick={() => this.setState({ editAlbumId: null })}
-                      className="album-edit-form__btn album-edit-form__btn--cancel"
+                      className="album-edit-form__btn--cancel"
                     >
                       Отмена
                     </button>

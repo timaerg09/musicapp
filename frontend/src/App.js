@@ -1,5 +1,4 @@
-import "./css/reset.css";
-import "./css/main.css";
+import "./scss/main.scss";
 import Sidebar from "./components/sidebar";
 import { Outlet } from "react-router-dom";
 

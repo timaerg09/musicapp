@@ -1,0 +1,16 @@
+@use "../mixins" as *;
+
+.artist__card {
+  @include card-base;
+  &:hover {
+    cursor: pointer;
+  }
+  &-name {
+    font-size: 14px;
+    color: #a3a3a3;
+  }
+  &-nickname {
+    font-size: 20px;
+    font-weight: bold;
+  }
+}

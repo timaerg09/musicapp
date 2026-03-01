@@ -1,0 +1,7 @@
+@use "../mixins" as *;
+.artists {
+  @include page;
+}
+.artists__pagination {
+  @include pagination;
+}

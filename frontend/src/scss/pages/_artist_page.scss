@@ -1,0 +1,184 @@
+.artist-page {
+  &__header {
+    position: relative;
+    display: flex;
+    gap: 20px;
+    &-img {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+    }
+    &-info {
+      display: flex;
+      flex-direction: column;
+    }
+    &-nickname {
+      font-size: 30px;
+      margin-bottom: 5px;
+      margin-top: 20px;
+      font-weight: 600;
+    }
+    &-birthday {
+      margin-top: auto;
+      margin-bottom: 20px;
+    }
+  }
+  &__content {
+    margin-top: 20px;
+    &-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      align-items: center;
+    }
+    &-albums {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+    &-title {
+      font-size: 35px;
+    }
+  }
+  &__add-button:hover {
+    cursor: pointer;
+  }
+  &__overlay {
+    position: fixed;
+    inset: 0;
+    backdrop-filter: blur(4px);
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 99;
+  }
+}
+
+.artist-page__header-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  input {
+    padding: 6px 10px;
+    background-color: #2a2a2a;
+    border: 1px solid #3a3a3a;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 14px;
+    font-family: inherit;
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 1px #666;
+    }
+  }
+  button {
+    padding: 6px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: inherit;
+    &:first-of-type {
+      background-color: #34495e;
+      &:hover {
+        background-color: #3d566e;
+      }
+    }
+    &:last-of-type {
+      background-color: #2a2a2a;
+      border: 1px solid #3a3a3a;
+      &:hover {
+        background-color: #3a3a3a;
+      }
+    }
+  }
+}
+
+.artist-page__confirm-delete {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #181818;
+  border: 1px solid #34495e;
+  border-radius: 12px;
+  padding: 32px 40px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  p {
+    color: #fff;
+    font-size: 18px;
+    margin: 0;
+  }
+  &-btn {
+    width: 100%;
+    padding: 8px 24px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    background: #34495e;
+    color: #fff;
+    transition: background 0.2s;
+    &:hover {
+      background: #5b7fa6;
+    }
+    &:last-child {
+      background: transparent;
+      border: 1px solid #34495e;
+      color: #aaa;
+      &:hover {
+        color: #fff;
+      }
+    }
+  }
+}
+
+.album-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  background: linear-gradient(#34495e, #1f2937, #111827);
+  border-radius: 8px;
+  width: 200px;
+  input {
+    background: #121212;
+    border: 1px solid #34495e;
+    border-radius: 4px;
+    padding: 6px 10px;
+    color: #fff;
+    font-family: "Montserrat", sans-serif;
+    font-size: 13px;
+    outline: none;
+    &:focus {
+      border-color: #5b7fa6;
+    }
+  }
+  button {
+    padding: 6px 10px;
+    border: none;
+    border-radius: 4px;
+    font-family: "Montserrat", sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+  }
+}
+
+.album-edit-form__btn {
+  &--save {
+    background: #34495e;
+    color: #fff;
+    &:hover {
+      background: #5b7fa6;
+    }
+  }
+  &--cancel {
+    background: transparent;
+    color: #aaa;
+    border: 1px solid #34495e;
+    &:hover {
+      color: #fff;
+    }
+  }
+}

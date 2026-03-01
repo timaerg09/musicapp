@@ -100,12 +100,8 @@ class Albums extends React.Component {
         <div className="container">
           <div className="albums__header">
             <h2 className="title">Albums</h2>
-            {/* <div className="albums__header-button" onClick={this.handleAddForm}>
-                <IoIosAddCircleOutline className="add--icon" />
-              </div> */}
             <SearchAlbum onSearchResult={this.handleSearchResult} />
           </div>
-          {/* <AlbumCreate showForm={this.state.showForm}/> */}
 
           <div className="albums__content">
             {(Array.isArray(albums) ? albums : []).map((album) => (

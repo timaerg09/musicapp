@@ -1,0 +1,26 @@
+@use "../mixins" as *;
+.add--icon {
+  @include icon-base(48px);
+}
+
+.delete-album--icon {
+  @include icon-absolute(-5px, -5px);
+  @include icon-base(30px);
+}
+.edit-artist--icon {
+  @include icon-base(30px);
+  @include icon-absolute(auto, 30px);
+}
+.delete-artist--icon {
+  @include icon-base(30px);
+  @include icon-absolute(auto, 0px);
+}
+
+.edit-album--icon {
+  @include icon-base(30px);
+  @include icon-absolute(-5px, 30px);
+}
+
+.back--icon {
+  @include icon-base(48px);
+}
