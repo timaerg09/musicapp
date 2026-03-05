@@ -1,6 +1,6 @@
 import React from "react";
 import API_URL from "../config";
-
+// форма для создания артиста
 class CreateArtist extends React.Component {
   state = {
     name: "",
@@ -8,11 +8,11 @@ class CreateArtist extends React.Component {
     image_url: "",
     birthday: "",
   };
-
+// обработчик изменения значений полей формы
   handleChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   };
-
+// обработчик создания артиста
   handleSumbit = (e) => {
     e.preventDefault();
     const { name, nickname, image_url, birthday } = this.state;

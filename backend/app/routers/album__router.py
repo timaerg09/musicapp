@@ -1,15 +1,7 @@
-from app.schemas.artist_schema import ArtistCreate, ArtistResponse, ArtistUpdate
 from app.schemas.album_schema import AlbumCreate, AlbumResponse, AlbumUpdate
-from app.schemas.artist_album_schema import (
-    Artist_AlbumCreate,
-    Artist_AlbumResponse,
-    Artist_AlbumUpdate,
-)
 from app.models.album import Album
-from app.models.artist import Artist
 from app.models.artist_album import ArtistAlbum
-from fastapi import APIRouter, Depends, HTTPException,Query
-import datetime
+from fastapi import APIRouter, Depends, HTTPException
 import uuid
 from sqlalchemy.orm import Session
 from app.database import get_db
@@ -21,17 +13,20 @@ import random
 album_router = APIRouter(prefix="/albums", tags=["albums"])
 
 
+# функция для разбивания строки на триаграмы
 def trigrams(s: str):
     s = s.lower()
     return {s[i : i + 3] for i in range(len(s) - 2)}
 
 
+# получить количество альбомов
 @album_router.get("/get/count", response_model=int)
 def get_albums_count(db: Session = Depends(get_db)):
     result = db.execute(select(func.count()).select_from(Album)).scalar()
     return result
 
 
+# получить альбом по его id
 @album_router.get("/get/id/{album_id}", response_model=AlbumResponse)
 def get_album_by_id(album_id: str, db: Session = Depends(get_db)):
     try:
@@ -44,6 +39,7 @@ def get_album_by_id(album_id: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+# получить альбомы по поиску
 @album_router.get("/get/{search}", response_model=List[AlbumResponse])
 def get_album_by_search(
     search: str, db: Session = Depends(get_db)
@@ -72,6 +68,7 @@ def get_album_by_search(
     return [AlbumResponse.model_validate(album) for _, album in scored_albums[:10]]
 
 
+# получить все альбомы
 @album_router.get("/get", response_model=List[AlbumResponse])
 def get_all_albums(db: Session = Depends(get_db)):
     stmt = select(Album).order_by(func.lower(Album.title))
@@ -79,6 +76,7 @@ def get_all_albums(db: Session = Depends(get_db)):
     return albums
 
 
+# создать альбом
 @album_router.post("/create")
 def create_album(new_album: AlbumCreate, db: Session = Depends(get_db)):
     try:
@@ -96,6 +94,7 @@ def create_album(new_album: AlbumCreate, db: Session = Depends(get_db)):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+# удалить альбом
 @album_router.delete("/delete/{album_id}")
 def delete_album(album_id: str, db: Session = Depends(get_db)):
     try:
@@ -108,6 +107,7 @@ def delete_album(album_id: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+# удалить все альбомы
 @album_router.delete("/delete")
 def delete_all_albums(db: Session = Depends(get_db)):
     try:
@@ -120,6 +120,7 @@ def delete_all_albums(db: Session = Depends(get_db)):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+# обновить альбом
 @album_router.put("/update/{album_id}")
 def update_album(
     album_id: str, update_album: AlbumUpdate, db: Session = Depends(get_db)
@@ -138,6 +139,7 @@ def update_album(
         raise HTTPException(status_code=500, detail=str(e))
 
 
+# получить случайные альбомы (4), нужно для страницы home
 @album_router.get("/random", response_model=List[AlbumResponse])
 def get_random_albums(db: Session = Depends(get_db)):
     try:
@@ -151,6 +153,7 @@ def get_random_albums(db: Session = Depends(get_db)):
         raise HTTPException(status_code=505, detail=str(e))
 
 
+# получить альбомы пагинацией
 @album_router.get("/albums-pagination", response_model=List[AlbumResponse])
 def get_ablums_pagination(skip: int = 0, limit: int = 8, db: Session = Depends(get_db)):
     try:
@@ -161,31 +164,32 @@ def get_ablums_pagination(skip: int = 0, limit: int = 8, db: Session = Depends(g
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@album_router.get("/albums-pagination/{search}", response_model=List[AlbumResponse])
-def get_ablums_pagination_by_search(
-    search: str, skip: int = 0, limit: int = 8, db: Session = Depends(get_db)
-):
-    query = search.lower().strip()
+# получить альбомы пагинацией после поиска(не используется)
+# @album_router.get("/albums-pagination/{search}", response_model=List[AlbumResponse])
+# def get_ablums_pagination_by_search(
+#     search: str, skip: int = 0, limit: int = 8, db: Session = Depends(get_db)
+# ):
+#     query = search.lower().strip()
 
-    stmt = select(Album)
-    albums = db.execute(stmt).scalars().all()
+#     stmt = select(Album)
+#     albums = db.execute(stmt).scalars().all()
 
-    scored_albums = []
+#     scored_albums = []
 
-    if len(query) < 3:
-        for album in albums:
-            if query in album.title.lower():
-                scored_albums.append((1, album))
-    else:
-        query_trigrams = trigrams(query)
-        for album in albums:
-            title_trigrams = trigrams(album.title)
-            score = len(query_trigrams & title_trigrams)
-            if score > 0:
-                scored_albums.append((score, album))
+#     if len(query) < 3:
+#         for album in albums:
+#             if query in album.title.lower():
+#                 scored_albums.append((1, album))
+#     else:
+#         query_trigrams = trigrams(query)
+#         for album in albums:
+#             title_trigrams = trigrams(album.title)
+#             score = len(query_trigrams & title_trigrams)
+#             if score > 0:
+#                 scored_albums.append((score, album))
 
-    scored_albums.sort(key=lambda x: x[0], reverse=True)
+#     scored_albums.sort(key=lambda x: x[0], reverse=True)
 
-    paginated = scored_albums[skip : skip + limit]
+#     paginated = scored_albums[skip : skip + limit]
 
-    return [AlbumResponse.model_validate(album) for _, album in paginated]
+#     return [AlbumResponse.model_validate(album) for _, album in paginated]

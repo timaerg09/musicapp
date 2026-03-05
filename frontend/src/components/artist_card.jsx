@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+// карточка артиста
 class Artist_Card extends React.Component {
   render() {
     return (

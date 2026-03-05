@@ -4,6 +4,7 @@ import { getArtistsNicknames } from "../utils";
 import SearchAlbum from "../components/search_album";
 import API_URL from "../config";
 
+// страница всех альбомов
 class Albums extends React.Component {
   constructor(props) {
     super(props);
@@ -32,9 +33,7 @@ class Albums extends React.Component {
         const params = new URLSearchParams();
         album_ids.forEach((id) => params.append("album_ids", id));
         if (album_ids.length === 0) return;
-        fetch(
-          `${API_URL}/artist-album/get/artists/by-albums?${params}`,
-        )
+        fetch(`${API_URL}/artist-album/get/artists/by-albums?${params}`)
           .then((res) => res.json())
           .then((artistsData) => {
             const artists_map = {};
@@ -53,6 +52,7 @@ class Albums extends React.Component {
       });
     this.fetchAlbums();
   }
+  // функция для создания кнопок пагинации ( 1 2 ... 5 6 7 ... 8 9 )
   getPageNumbers = () => {
     const { currentPage, totalPages } = this.state;
     const pages = [];
@@ -71,15 +71,13 @@ class Albums extends React.Component {
 
     return pages;
   };
+  // обработчик смены текущей страницы
   handlePageChange = (page) => {
     this.setState({ currentPage: page }, () => {
       this.fetchAlbums();
     });
   };
-  handleAddForm = (e) => {
-    this.setState((prev) => ({ showForm: !prev.showForm }));
-  };
-
+  // обработчик поиска
   handleSearchResult(searchData) {
     if (!searchData) {
       this.setState({ isSearching: false }, () => this.fetchAlbums());

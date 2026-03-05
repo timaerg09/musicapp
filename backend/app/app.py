@@ -18,10 +18,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# @app.get("/")
-# def root():
-#     return {"ok": True}
-
 app.include_router(artist_router)
 app.include_router(album_router)
 app.include_router(artist_album_router)

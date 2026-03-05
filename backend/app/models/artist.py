@@ -1,8 +1,6 @@
 from sqlalchemy import Column, String, Date
 import uuid
 from app.database import Base
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import relationship
 
 
 class Artist(Base):
@@ -13,5 +11,3 @@ class Artist(Base):
     nickname = Column(String, nullable=False)
     image_url = Column(String)
     birthday = Column(Date)
-
-    # albums = relationship("Album", secondary="ArtistAlbum", back_populates="artists")

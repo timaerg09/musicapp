@@ -1,25 +1,17 @@
-from app.schemas.artist_schema import ArtistCreate, ArtistResponse, ArtistUpdate
-from app.schemas.album_schema import AlbumCreate, AlbumResponse, AlbumUpdate
-from app.schemas.artist_album_schema import (
-    Artist_AlbumCreate,
-    Artist_AlbumResponse,
-    Artist_AlbumUpdate,
-    AlbumArtistsResponse
-)
+from app.schemas.album_schema import AlbumResponse
+from app.schemas.artist_album_schema import AlbumArtistsResponse
 from app.models.album import Album
 from app.models.artist import Artist
 from app.models.artist_album import ArtistAlbum
 from fastapi import APIRouter, Depends, HTTPException, Query
-import datetime
-import uuid
 from sqlalchemy.orm import Session
 from app.database import get_db
-from sqlalchemy import select, delete, update, func
+from sqlalchemy import select, delete
 from typing import List
 
 artist_album_router = APIRouter(prefix="/artist-album", tags=["artist_album"])
 
-
+# создать связь
 @artist_album_router.post("/create")
 def create_artist_album_connection(
     artist_ids: List[str]=Query(...), album_ids: List[str]=Query(...), db: Session = Depends(get_db)
@@ -35,7 +27,7 @@ def create_artist_album_connection(
         db.rollback()
         raise HTTPException(status_code=500, detail=str(e))
 
-
+# получить всех артистов по id альбома
 @artist_album_router.get("/get/artists/by-albums", response_model=List[AlbumArtistsResponse])
 def get_artists_by_albums(album_ids: List[str] = Query(...), db: Session = Depends(get_db)):
     try:
@@ -59,7 +51,7 @@ def get_artists_by_albums(album_ids: List[str] = Query(...), db: Session = Depen
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-
+# получить все альбомы по id артиста
 @artist_album_router.get("/get/albums/by-artist", response_model=List[AlbumResponse])
 def get_albums_by_artist(artist_id: str, db: Session = Depends(get_db)):
     try:
@@ -77,7 +69,7 @@ def get_albums_by_artist(artist_id: str, db: Session = Depends(get_db)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-
+# удалить связь
 @artist_album_router.delete("/delete/connection")
 def delete_connection(artist_id: str=Query(...), album_id: str=Query(...), db: Session = Depends(get_db)):
     try:
@@ -90,7 +82,7 @@ def delete_connection(artist_id: str=Query(...), album_id: str=Query(...), db: S
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-
+# удалить все связи
 @artist_album_router.delete("/delete")
 def delete_all_connections(db: Session = Depends(get_db)):
     try:

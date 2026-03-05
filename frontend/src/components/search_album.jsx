@@ -1,6 +1,7 @@
 import React from "react";
 import API_URL from "../config";
 
+// форма поиска альбомов
 class SearchAlbum extends React.Component {
   handleChange = (e) => {
     const query = e.target.value;

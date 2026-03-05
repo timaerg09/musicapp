@@ -1,8 +1,6 @@
-from sqlalchemy import Column, String, DateTime, ForeignKey, Date, Integer
+from sqlalchemy import Column, String, Integer
 import uuid
 from app.database import Base
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import relationship
 
 
 class Album(Base):
@@ -12,9 +10,6 @@ class Album(Base):
     title = Column(String, nullable=False)
     year = Column(Integer)
     cover_url = Column(String)
-
-    # artists = relationship("Artist", secondary="ArtistAlbum", back_populates="albums")
-
 
     @property
     def year_only(self):

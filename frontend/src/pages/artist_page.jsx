@@ -8,6 +8,7 @@ import { CiEdit } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
 import API_URL from "../config";
 
+// страница артиста
 class ArtistPage extends React.Component {
   constructor(props) {
     super(props);
@@ -31,6 +32,7 @@ class ArtistPage extends React.Component {
       showConfirmDelete: false,
     };
   }
+// функия получения возраста артиста
   currentAge = (birthday) => {
   const birth = new Date(birthday);
   const today = new Date();
@@ -44,6 +46,7 @@ class ArtistPage extends React.Component {
 
   return age;
 };
+// функция форматирования дня рождения
   birthdayFormatter = (birthday) => {
     if (!birthday) return "";
     const [year, month, day] = birthday.split("-");
@@ -77,9 +80,11 @@ class ArtistPage extends React.Component {
           });
       });
   }
+// обработчик смены состояния формы создания альбома
   handleAddForm = (e) => {
     this.setState((prev) => ({ showForm: !prev.showForm }));
   };
+// обработчик удаления альбома
   handleDeleteAlbum = (album_id) => {
     fetch(
       `${API_URL}/artist-album/get/artists/by-albums?album_ids=${album_id}`,
@@ -101,6 +106,7 @@ class ArtistPage extends React.Component {
         }
       });
   };
+// обработчик изменения альбома
   handleEditAlbum = (album_id) => {
     const album = this.state.albums.find((a) => a.id === album_id);
     this.setState({
@@ -113,6 +119,7 @@ class ArtistPage extends React.Component {
       editAlbumId: album.id,
     });
   };
+// обновить альбомы на странице
   refreshAlbums = () => {
     fetch(
       `${API_URL}/artist-album/get/albums/by-artist?artist_id=${this.props.id}`,
@@ -120,6 +127,7 @@ class ArtistPage extends React.Component {
       .then((res) => res.json())
       .then((data) => this.setState({ albums: data }));
   };
+// обработчик смены состояния изменения артиста
   handleEditToggle = () => {
     const { artist } = this.state;
     this.setState((prev) => ({
@@ -132,6 +140,7 @@ class ArtistPage extends React.Component {
       },
     }));
   };
+// обработчик удаления артиста
   handleConfirmDelete = () => {
     fetch(`${API_URL}/artists/delete/${this.props.id}`, {
       method: "DELETE",
@@ -139,6 +148,7 @@ class ArtistPage extends React.Component {
       window.history.back();
     });
   };
+// обработчик изменения артиста
   handleSaveArtist = (e) => {
     e.preventDefault();
     fetch(`${API_URL}/artists/update/${this.props.id}`, {
@@ -152,6 +162,7 @@ class ArtistPage extends React.Component {
       });
     });
   };
+// обработчик изменения альбома
   handleSaveAlbum = (e, album_id) => {
     e.preventDefault();
     fetch(`${API_URL}/albums/update/${album_id}`, {

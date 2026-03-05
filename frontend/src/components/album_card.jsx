@@ -2,6 +2,7 @@ import React from "react";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { RiEditCircleLine } from "react-icons/ri";
 
+// карточка альбома
 class Album_Card extends React.Component {
   render() {
     return (

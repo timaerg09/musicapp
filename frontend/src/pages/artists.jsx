@@ -36,7 +36,7 @@ class Artists extends React.Component {
       });
     this.fetchArtists();
   }
-
+// функция для создания кнопок пагинации ( 1 2 ... 5 6 7 ... 8 9 )
   getPageNumbers = () => {
     const { currentPage, totalPages } = this.state;
     const pages = [];
@@ -55,15 +55,17 @@ class Artists extends React.Component {
 
     return pages;
   };
+// обработчик смены текущей страницы
   handlePageChange = (page) => {
     this.setState({ currentPage: page }, () => {
       this.fetchArtists();
     });
   };
+// обработчик смены состояния создания артиста
   handleAddForm = (e) => {
     this.setState((prev) => ({ showForm: !prev.showForm }));
   };
-
+// обработчик поиска
   handleSearchResult(searchData) {
      if (!searchData) {
       this.setState({ isSearching: false }, () => this.fetchArtists());

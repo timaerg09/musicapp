@@ -4,6 +4,7 @@ import { GrHomeRounded } from "react-icons/gr";
 import { TbMicrophone2 } from "react-icons/tb";
 import { BiAlbum } from "react-icons/bi";
 
+// боковая панель для навигации по сайту
 class Sidebar extends React.Component {
   render() {
     return (

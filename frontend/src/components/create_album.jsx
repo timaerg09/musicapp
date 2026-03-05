@@ -1,6 +1,7 @@
 import React from "react";
 import API_URL from "../config";
 
+// форма для создания альбома
 class CreateAlbum extends React.Component {
   state = {
     title: "",
@@ -10,11 +11,11 @@ class CreateAlbum extends React.Component {
     artist_results: [],
     selected_artists: [],
   };
-
+// обработчик изменения значений полей формы
   handleChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   };
-
+// обработчик поиска артистов
   handleArtistSearch = (e) => {
     const query = e.target.value;
     this.setState({ artist_search: query });
@@ -26,7 +27,7 @@ class CreateAlbum extends React.Component {
       .then((res) => res.json())
       .then((data) => this.setState({ artist_results: data }));
   };
-
+// обработчик выбора артиста при создании альбома
   handleSelectArtist = (artist) => {
     const { selected_artists } = this.state;
     if (selected_artists.find((a) => a.id === artist.id)) return;
@@ -36,13 +37,13 @@ class CreateAlbum extends React.Component {
       artist_results: [],
     });
   };
-
+// обработчик исключения артиста при создании альбома
   handleRemoveArtist = (id) => {
     this.setState({
       selected_artists: this.state.selected_artists.filter((a) => a.id !== id),
     });
   };
-
+// обработчик создания альбома
   handleSumbit = (e) => {
     e.preventDefault();
     const { title, year, cover_url, selected_artists } = this.state;
