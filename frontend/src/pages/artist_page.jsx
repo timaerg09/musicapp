@@ -32,10 +32,18 @@ class ArtistPage extends React.Component {
     };
   }
   currentAge = (birthday) => {
-    const birth = new Date(birthday);
-    const today = new Date();
-    return Math.floor(today.getFullYear() - birth.getFullYear());
-  };
+  const birth = new Date(birthday);
+  const today = new Date();
+
+  let age = today.getFullYear() - birth.getFullYear();
+
+  const m = today.getMonth() - birth.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) {
+    age--;
+  }
+
+  return age;
+};
   birthdayFormatter = (birthday) => {
     if (!birthday) return "";
     const [year, month, day] = birthday.split("-");
