@@ -34,7 +34,7 @@ class ArtistPage extends React.Component {
   currentAge = (birthday) => {
     const birth = new Date(birthday);
     const today = new Date();
-    return today.getFullYear() - birth.getFullYear();
+    return Math.floor(today.getFullYear() - birth.getFullYear());
   };
   birthdayFormatter = (birthday) => {
     if (!birthday) return "";
